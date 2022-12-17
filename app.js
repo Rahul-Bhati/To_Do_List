@@ -11,6 +11,9 @@ app.use(express.static("public"));
 
 let items = ["Shop Vegitable" , "Cook Food" , "Eat Food"];
 
+// Day 4
+let Workitems = [];
+
 app.get("/",function(req,res){
   // res.send("Hello World");
   let today = new Date();
@@ -40,14 +43,29 @@ app.get("/",function(req,res){
   // Day 3
   let options = { weekday: 'long', month: 'long', day: 'numeric' };
   day = today.toLocaleDateString("en-us",options);
-  res.render("list",{kindofday : day , item : items});
+  res.render("list",{listItem : day , item : items});
 
 });
 
 // Day 3
 app.post("/",function(req,res){
-  items.push(req.body.newItem);
-  res.redirect("/");
+  // console.log(req.body
+  let item = req.body.newItem ;
+  if(req.body.list === "Work List"){
+    Workitems.push(item);
+    res.redirect("/work");
+  }else{
+    items.push(item);
+    res.redirect("/");
+  }
+});
+
+// Day 4
+app.get("/work",function(req,res){
+  res.render("list",{listItem : "Work List" , item : Workitems});
+});
+app.get("/about",function(req,res){
+  res.render("about");
 });
 
 app.listen(5000,function(){
